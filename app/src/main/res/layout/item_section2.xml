@@ -22,6 +22,7 @@
             android:background="@color/black"/>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:clickable="false"
             android:hint="TYPE"
             android:text="@{param.name}"
             android:paddingVertical="2dp"

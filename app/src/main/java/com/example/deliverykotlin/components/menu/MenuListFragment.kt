@@ -38,11 +38,10 @@ class MenuListFragment : Fragment() {
         actionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
 
         viewModel=ViewModelProvider(requireActivity()).get(MenuViewModel::class.java)
-        viewModel.getMenuList()
 
         val recyclerView=binding.recycler
-        viewModel.menuLive.observe(viewLifecycleOwner, { list ->
-            val recyclerSectionItemDecoration = getDecorForSection1(list)
+        viewModel.getMenuList().observe(viewLifecycleOwner, { list ->
+            val recyclerSectionItemDecoration = getDecorForSection1(list,viewModel.param)
             val adapter = EntityRecyclerAdapter(list)
             recyclerView.apply {
                 this?.adapter = adapter
@@ -53,23 +52,41 @@ class MenuListFragment : Fragment() {
         return view
     }
 
-    fun getDecorForSection1(list: List<MyEntity>): RecyclerSectionItemDecoration? {
+    fun getDecorForSection1(list: List<MyEntity>, param: Param): RecyclerSectionItemDecoration? {
         return RecyclerSectionItemDecoration(
             requireContext().resources
                 .getDimensionPixelSize(R.dimen.recycler_section_header_height),
             true,  // true for sticky, false for not
             object : RecyclerSectionItemDecoration.SectionCallback {
                 override fun isSection(position: Int): Boolean {
-                    return (position == 0
-                            || list[position] //.getLastName()
-                        .brand.get(0) !== list[position - 1] //.getLastName()
-                        .brand.get(0))
+                    when(param) {
+                        Param.BRAND -> {
+                            return (position == 0
+                                    || list[position] //.getLastName()
+                                .brand.get(0) !== list[position - 1] //.getLastName()
+                                .brand.get(0))
+                        }
+                        Param.TYPE-> {
+                            return (position == 0
+                                    || list[position] //.getLastName()
+                                .type.get(0) !== list[position - 1] //.getLastName()
+                                .type.get(0))
+                        }
+                    }
                 }
 
                 override fun getSectionHeader(position: Int): CharSequence {
-                    return list[position] //.getLastName()
-                        .brand
-                    //.subSequence(0, 3); //.subSequence(0, 1);   //•установление заголовка
+                    when(param){
+                        Param.BRAND->{
+                            return list[position]
+                                .brand
+
+                        }
+                        Param.TYPE->{
+                            return list[position]
+                                .type
+                        }
+                    }
                 }
             })
     }

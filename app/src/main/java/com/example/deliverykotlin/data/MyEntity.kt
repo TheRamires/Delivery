@@ -12,5 +12,5 @@ data class MyEntity(
     val name: String,
     val description: String,
     val price: String,
-    val param1:String,
+    val type:String,
 )
