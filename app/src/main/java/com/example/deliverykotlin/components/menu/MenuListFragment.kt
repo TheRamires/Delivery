@@ -10,12 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.example.deliverykotlin.Loger
 import com.example.deliverykotlin.R
 import com.example.deliverykotlin.adapters.RecyclerSectionItemDecoration
 import com.example.deliverykotlin.components.menu.adapter.EntityRecyclerAdapter
-import com.example.deliverykotlin.data.BrandOfCar
 import com.example.deliverykotlin.data.MyEntity
-import com.example.deliverykotlin.data.TypeOfCar
 import com.example.deliverykotlin.databinding.FragmentMenuListBinding
 
 class MenuListFragment : Fragment() {
@@ -28,7 +27,6 @@ class MenuListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding=FragmentMenuListBinding.inflate(inflater)
-        val recyclerView=binding.recycler
         val view =binding.root
         val customView=inflater.inflate(R.layout.custom_button_menu, null).also {
             it.findViewById<TextView>(R.id.btn_menu).text="Sections"
@@ -45,10 +43,15 @@ class MenuListFragment : Fragment() {
         viewModel.getMenuList().observe(viewLifecycleOwner, { list ->
             val recyclerSectionItemDecoration = getDecorForSection1(list, viewModel.param)
             val adapter = EntityRecyclerAdapter(list)
-            recyclerView.apply {
+            binding.recycler.apply {
                 this?.adapter = adapter
                 this.addItemDecoration(recyclerSectionItemDecoration!!)
-                scrollToPosition(viewModel.findPosition(list,TypeOfCar.RETRO.name))
+                var position=0
+                viewModel.paramFinding?.let {
+                    Loger.message(it?.value)
+                    position=viewModel.findPosition(list)
+                }
+                scrollToPosition(position)
             }
         })
 

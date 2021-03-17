@@ -7,7 +7,7 @@ import java.util.*
 
 class MenuViewModel: ViewModel() {
     var param: Param= Param.BRAND
-    var paramFinding:String? =null
+    var paramFinding= MutableLiveData<String>()
     var position: Int=0
 
     fun getMenuList():MutableLiveData<MutableList<MyEntity>>{
@@ -29,26 +29,14 @@ class MenuViewModel: ViewModel() {
         return MutableLiveData<MutableList<Type>>(list)
     }
     fun findPosition(list: MutableList<MyEntity>):Int{
-        var iterator=list.iterator()
-        var tempEntity: MyEntity?=null
         var i=0
         for (entity in list){
-            if (paramFinding.equals(entity.brand)||paramFinding.equals(entity.type) ){
+            if (paramFinding.value.equals(entity.brand)||
+                paramFinding.value.equals(entity.type) ){
                 return i
             }
             i++
         }
-
-
-        /*
-        while (iterator.hasNext()){
-            if ( param.name.equals(tempEntity?.brand, ignoreCase = true) ||
-                param.name.equals(tempEntity?.type, ignoreCase = true)
-                    ){
-                return i
-            }
-            i++
-        }*/
         return i
     }
 }

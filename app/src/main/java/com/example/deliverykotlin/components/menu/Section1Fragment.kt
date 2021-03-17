@@ -22,7 +22,7 @@ class Section1Fragment : Fragment() {
         var resyclerView= binding.recycler
 
         viewModel.getSection1Live().observe(viewLifecycleOwner, {list->
-            var adapter= BrandRecyclerAdapter(list)
+            var adapter= BrandRecyclerAdapter(list, viewModel.paramFinding)
             resyclerView.adapter=adapter
             viewModel.param=Param.BRAND
         })

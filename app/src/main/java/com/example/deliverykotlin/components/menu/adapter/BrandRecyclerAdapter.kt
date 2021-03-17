@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverykotlin.Loger
 import com.example.deliverykotlin.R
+import com.example.deliverykotlin.components.menu.MenuViewModel
 import com.example.deliverykotlin.data.Brand
 import com.example.deliverykotlin.databinding.ItemSection1Binding
 
-class BrandRecyclerAdapter(private val values: List<Brand>, var paramFinding:String) :
+class BrandRecyclerAdapter(private val values: List<Brand>, val paramFinding: MutableLiveData<String>) :
     RecyclerView.Adapter<BrandRecyclerAdapter.MyViewHolder>() {
 
     override fun getItemCount() = values.size
@@ -28,7 +30,7 @@ class BrandRecyclerAdapter(private val values: List<Brand>, var paramFinding:Str
         holder.binding?.setParam(values[position])
 
         holder.itemView.setOnClickListener { v ->
-            paramFinding=values[position].name
+            paramFinding.setValue(values[position].name)
             Navigation.findNavController(v).popBackStack()
         }
 
