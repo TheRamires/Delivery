@@ -8,10 +8,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverykotlin.components.menu.MenuViewModel
+import com.example.deliverykotlin.components.menu.Param
 import com.example.deliverykotlin.data.Type
 import com.example.deliverykotlin.databinding.ItemSection2Binding
 
-class TypeRecyclerAdapter (private val values: List<Type>, val paramFinding: MutableLiveData<String>) :
+class TypeRecyclerAdapter (
+    private val values: List<Type>,
+    val paramFinding: MutableLiveData<String>,
+    val param: MutableLiveData<Param>,
+) :
     RecyclerView.Adapter<TypeRecyclerAdapter.MyViewHolder>() {
 
     override fun getItemCount() = values.size
@@ -27,6 +32,7 @@ class TypeRecyclerAdapter (private val values: List<Type>, val paramFinding: Mut
         holder.binding?.setParam(values[position])
         holder.itemView.setOnClickListener {v->
             paramFinding.setValue(values[position].name)
+            param.value=Param.TYPE
             Navigation.findNavController(v).popBackStack()
         }
     }

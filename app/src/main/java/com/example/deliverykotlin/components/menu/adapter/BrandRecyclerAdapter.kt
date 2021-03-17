@@ -11,10 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverykotlin.Loger
 import com.example.deliverykotlin.R
 import com.example.deliverykotlin.components.menu.MenuViewModel
+import com.example.deliverykotlin.components.menu.Param
 import com.example.deliverykotlin.data.Brand
 import com.example.deliverykotlin.databinding.ItemSection1Binding
 
-class BrandRecyclerAdapter(private val values: List<Brand>, val paramFinding: MutableLiveData<String>) :
+class BrandRecyclerAdapter(
+    private val values: List<Brand>,
+    val paramFinding: MutableLiveData<String>,
+    val param: MutableLiveData<Param>,
+) :
     RecyclerView.Adapter<BrandRecyclerAdapter.MyViewHolder>() {
 
     override fun getItemCount() = values.size
@@ -31,6 +36,7 @@ class BrandRecyclerAdapter(private val values: List<Brand>, val paramFinding: Mu
 
         holder.itemView.setOnClickListener { v ->
             paramFinding.setValue(values[position].name)
+            param.value=Param.BRAND
             Navigation.findNavController(v).popBackStack()
         }
 

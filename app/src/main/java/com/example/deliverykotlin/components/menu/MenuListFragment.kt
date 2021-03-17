@@ -41,7 +41,7 @@ class MenuListFragment : Fragment() {
         viewModel=ViewModelProvider(requireActivity()).get(MenuViewModel::class.java)
 
         viewModel.getMenuList().observe(viewLifecycleOwner, { list ->
-            val recyclerSectionItemDecoration = getDecorForSection1(list, viewModel.param)
+            val recyclerSectionItemDecoration = getDecorForSection1(list, viewModel.param.value!!)
             val adapter = EntityRecyclerAdapter(list)
             binding.recycler.apply {
                 this?.adapter = adapter

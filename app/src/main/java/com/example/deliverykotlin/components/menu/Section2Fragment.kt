@@ -22,9 +22,8 @@ class Section2Fragment : Fragment() {
 
         var resyclerView= binding.recycler
         viewModel.getSection2Live().observe(viewLifecycleOwner, {list->
-            var adapter= TypeRecyclerAdapter(list,viewModel.paramFinding)
+            var adapter= TypeRecyclerAdapter(list,viewModel.paramFinding,viewModel.param)
             resyclerView.adapter=adapter
-            viewModel.param=Param.TYPE
         })
         return view
     }

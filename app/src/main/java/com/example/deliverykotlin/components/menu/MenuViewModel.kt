@@ -6,13 +6,13 @@ import com.example.deliverykotlin.data.*
 import java.util.*
 
 class MenuViewModel: ViewModel() {
-    var param: Param= Param.BRAND
+    var param=MutableLiveData<Param>(Param.BRAND)
     var paramFinding= MutableLiveData<String>()
     var position: Int=0
 
     fun getMenuList():MutableLiveData<MutableList<MyEntity>>{
         var list=getEntityList()
-        when(param){
+        when(param.value){
             Param.BRAND ->
                 Collections.sort(list, { o1, o2 -> o1.brand.compareTo(o2.brand) })
             Param.TYPE ->
