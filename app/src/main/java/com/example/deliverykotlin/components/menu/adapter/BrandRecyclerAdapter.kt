@@ -1,5 +1,6 @@
 package com.example.deliverykotlin.components.menu.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import com.example.deliverykotlin.R
 import com.example.deliverykotlin.data.Brand
 import com.example.deliverykotlin.databinding.ItemSection1Binding
 
-class BrandRecyclerAdapter(private val values: List<Brand>) :
+class BrandRecyclerAdapter(private val values: List<Brand>, var paramFinding:String) :
     RecyclerView.Adapter<BrandRecyclerAdapter.MyViewHolder>() {
 
     override fun getItemCount() = values.size
@@ -27,6 +28,7 @@ class BrandRecyclerAdapter(private val values: List<Brand>) :
         holder.binding?.setParam(values[position])
 
         holder.itemView.setOnClickListener { v ->
+            paramFinding=values[position].name
             Navigation.findNavController(v).popBackStack()
         }
 

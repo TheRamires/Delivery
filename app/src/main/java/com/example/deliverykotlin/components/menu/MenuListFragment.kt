@@ -13,7 +13,9 @@ import androidx.navigation.Navigation
 import com.example.deliverykotlin.R
 import com.example.deliverykotlin.adapters.RecyclerSectionItemDecoration
 import com.example.deliverykotlin.components.menu.adapter.EntityRecyclerAdapter
+import com.example.deliverykotlin.data.BrandOfCar
 import com.example.deliverykotlin.data.MyEntity
+import com.example.deliverykotlin.data.TypeOfCar
 import com.example.deliverykotlin.databinding.FragmentMenuListBinding
 
 class MenuListFragment : Fragment() {
@@ -26,6 +28,7 @@ class MenuListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding=FragmentMenuListBinding.inflate(inflater)
+        val recyclerView=binding.recycler
         val view =binding.root
         val customView=inflater.inflate(R.layout.custom_button_menu, null).also {
             it.findViewById<TextView>(R.id.btn_menu).text="Sections"
@@ -39,13 +42,13 @@ class MenuListFragment : Fragment() {
 
         viewModel=ViewModelProvider(requireActivity()).get(MenuViewModel::class.java)
 
-        val recyclerView=binding.recycler
         viewModel.getMenuList().observe(viewLifecycleOwner, { list ->
-            val recyclerSectionItemDecoration = getDecorForSection1(list,viewModel.param)
+            val recyclerSectionItemDecoration = getDecorForSection1(list, viewModel.param)
             val adapter = EntityRecyclerAdapter(list)
             recyclerView.apply {
                 this?.adapter = adapter
                 this.addItemDecoration(recyclerSectionItemDecoration!!)
+                scrollToPosition(viewModel.findPosition(list,TypeOfCar.RETRO.name))
             }
         })
 
@@ -59,14 +62,14 @@ class MenuListFragment : Fragment() {
             true,  // true for sticky, false for not
             object : RecyclerSectionItemDecoration.SectionCallback {
                 override fun isSection(position: Int): Boolean {
-                    when(param) {
+                    when (param) {
                         Param.BRAND -> {
                             return (position == 0
                                     || list[position] //.getLastName()
                                 .brand.get(0) !== list[position - 1] //.getLastName()
                                 .brand.get(0))
                         }
-                        Param.TYPE-> {
+                        Param.TYPE -> {
                             return (position == 0
                                     || list[position] //.getLastName()
                                 .type.get(0) !== list[position - 1] //.getLastName()
@@ -76,13 +79,13 @@ class MenuListFragment : Fragment() {
                 }
 
                 override fun getSectionHeader(position: Int): CharSequence {
-                    when(param){
-                        Param.BRAND->{
+                    when (param) {
+                        Param.BRAND -> {
                             return list[position]
                                 .brand
 
                         }
-                        Param.TYPE->{
+                        Param.TYPE -> {
                             return list[position]
                                 .type
                         }
