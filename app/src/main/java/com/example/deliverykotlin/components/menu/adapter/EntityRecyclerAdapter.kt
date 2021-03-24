@@ -60,7 +60,7 @@ class EntityRecyclerAdapter(private val values: List<MyEntity>) :
         override fun onClick(v: View?) {
             when (v?.id){
                 R.id.clickable_layout ->positionListener.OnPositionClick(v!!, values[position].id)
-                R.id.price_button -> counterListner.OnCounterClick(v,values[position])
+                R.id.price_button -> counterListner.OnCounterClick(v,values[position],position)
             }
         }
     }
@@ -69,6 +69,6 @@ class EntityRecyclerAdapter(private val values: List<MyEntity>) :
         fun OnPositionClick(view: View, id: Int)
     }
     interface OnCounterClickListener{
-        fun OnCounterClick(view: View, entity: MyEntity)
+        fun OnCounterClick(view: View, entity: MyEntity,position: Int)
     }
 }

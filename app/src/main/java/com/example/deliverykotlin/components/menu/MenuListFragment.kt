@@ -1,7 +1,6 @@
 package com.example.deliverykotlin.components.menu
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +12,16 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.deliverykotlin.CartViewModel
-import com.example.deliverykotlin.Loger
 import com.example.deliverykotlin.R
 import com.example.deliverykotlin.adapters.RecyclerSectionItemDecoration
 import com.example.deliverykotlin.components.menu.adapter.EntityRecyclerAdapter
+import com.example.deliverykotlin.components.menu.adapter.EntityRecyclerAdapter.*
 import com.example.deliverykotlin.data.MyEntity
 import com.example.deliverykotlin.databinding.FragmentMenuListBinding
-import com.example.deliverykotlin.components.menu.adapter.EntityRecyclerAdapter.*
-import com.example.deliverykotlin.databinding.ItemListBinding
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class MenuListFragment : Fragment(), OnPositionClickListener, OnCounterClickListener{
     private val viewModel : MenuViewModel by viewModel()
@@ -43,7 +42,11 @@ class MenuListFragment : Fragment(), OnPositionClickListener, OnCounterClickList
             it.findViewById<TextView>(R.id.btn_menu).text="Sections"
             it.setOnClickListener { v->
                Navigation.findNavController(view)
-                   .navigate(R.id.action_navigation_menu_to_menuConteinerFragment2,null,getNavOptions())
+                   .navigate(
+                       R.id.action_navigation_menu_to_menuConteinerFragment2,
+                       null,
+                       getNavOptions()
+                   )
             }
         }
         actionBar= (activity as AppCompatActivity)!!.supportActionBar!!.apply {
@@ -51,6 +54,7 @@ class MenuListFragment : Fragment(), OnPositionClickListener, OnCounterClickList
             this?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
         }
         recyclerView=binding.recycler
+        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         viewModel.listLive.observe(viewLifecycleOwner, { list ->
             val recyclerSectionItemDecoration = getDecorForSection1(list, viewModel.param.value!!)
@@ -58,13 +62,14 @@ class MenuListFragment : Fragment(), OnPositionClickListener, OnCounterClickList
                 it.setPostionClickListener(this)
                 it.setCounterClickListener(this)
             }
+
             recyclerView.apply {
                 this?.adapter = recyclerAdapter
                 this.addItemDecoration(recyclerSectionItemDecoration!!)
             }
-            var position=0
+            var position = 0
             viewModel.paramName?.let {
-                position=viewModel.findPosition(list)
+                position = viewModel.findPosition(list)
             }
             recyclerView.scrollToPosition(position)
         })
@@ -122,16 +127,18 @@ class MenuListFragment : Fragment(), OnPositionClickListener, OnCounterClickList
 
     override fun OnPositionClick(view: View, id: Int) {
         var bundle=Bundle()
-        bundle.putInt("id",id)
+        bundle.putInt("id", id)
         view.findNavController().navigate(R.id.action_navigation_menu_to_detailFragment, bundle)
     }
 
-    override fun OnCounterClick(view: View, entity: MyEntity) {
+    override fun OnCounterClick(view: View, entity: MyEntity, position: Int) {
         when(view.id){
-            R.id.price_button->{
-                entity.counterVisible=true
-                //cartViewModel.getCountDownTimerVisible(entity,recyclerAdapter)
+            R.id.price_button -> {
+                entity.counterVisible = true
+                cartViewModel.getCountDownTimerVisible(entity,recyclerAdapter, position)
+                cartViewModel.startTimer()
             }
         }
+        recyclerAdapter.notifyItemChanged(position)
     }
 }
