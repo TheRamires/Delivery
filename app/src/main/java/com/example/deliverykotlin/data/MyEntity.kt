@@ -19,8 +19,33 @@ data class MyEntity(
     var counter:Int=0
         set(value) {
             if (value<=0){
+                field=0
+            } else {
                 field=value
             }
         }
+        get(){
+            return field
+        }
+
     var counterVisible:Boolean=false
+
+    fun addPostion(): Boolean{
+        if (counter==0){
+            counter++
+            return  true
+        } else return  false
+    }
+
+    fun plusPosition(): Boolean{
+        counter++
+        return true
+    }
+
+    fun minusPosition():Boolean{
+        if (counter>=1){
+            counter--
+            return true
+        }else return false
+    }
 }

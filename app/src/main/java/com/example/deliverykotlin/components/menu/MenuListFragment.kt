@@ -134,9 +134,27 @@ class MenuListFragment : Fragment(), OnPositionClickListener, OnCounterClickList
     override fun OnCounterClick(view: View, entity: MyEntity, position: Int) {
         when(view.id){
             R.id.price_button -> {
+                val added=entity.addPostion()
+                if (added){
+                    //count
+                }
                 entity.counterVisible = true
                 cartViewModel.getCountDownTimerVisible(entity,recyclerAdapter, position)
                 cartViewModel.startTimer()
+            }
+            R.id.plus_button->{
+                val plus=entity.plusPosition()
+                if (plus){
+                    //count
+                }
+                cartViewModel.refreshTimer()
+            }
+            R.id.minus_button->{
+                val minus=entity.minusPosition()
+                if (minus){
+                    //count
+                }
+                cartViewModel.refreshTimer()
             }
         }
         recyclerAdapter.notifyItemChanged(position)
