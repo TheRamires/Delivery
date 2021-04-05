@@ -50,8 +50,8 @@ class MenuListFragment : Fragment(), OnPositionClickListener, OnCounterClickList
             }
         }
         actionBar= (activity as AppCompatActivity)!!.supportActionBar!!.apply {
-            this?.setCustomView(customView)
-            this?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
+            this?.customView=customView
+            this?.displayOptions=ActionBar.DISPLAY_SHOW_CUSTOM
         }
         recyclerView=binding.recycler
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -77,7 +77,7 @@ class MenuListFragment : Fragment(), OnPositionClickListener, OnCounterClickList
         return view
     }
 
-    fun getDecorForSection1(list: List<MyEntity>, param: Param): RecyclerSectionItemDecoration? {
+    private fun getDecorForSection1(list: List<MyEntity>, param: Param): RecyclerSectionItemDecoration? {
         return RecyclerSectionItemDecoration(
             requireContext().resources
                 .getDimensionPixelSize(R.dimen.recycler_section_header_height),
@@ -115,14 +115,13 @@ class MenuListFragment : Fragment(), OnPositionClickListener, OnCounterClickList
                 }
             })
     }
-    fun getNavOptions():NavOptions{
-        val navOptions=NavOptions.Builder()
+    private fun getNavOptions():NavOptions{
+        return NavOptions.Builder()
             .setEnterAnim(R.animator.slide_down)
             .setExitAnim(R.animator.anim_stay)
             //.setPopEnterAnim(R.animator.slide_down)
             .setPopExitAnim(R.animator.slide_up)
             .build()
-        return navOptions
     }
 
     override fun OnPositionClick(view: View, id: Int) {

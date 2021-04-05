@@ -73,6 +73,5 @@
             layout="@layout/view_counter"
             />
 
-
     </RelativeLayout>
 </layout>

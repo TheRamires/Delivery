@@ -22,6 +22,7 @@ import com.example.deliverykotlin.databinding.ItemFavoritesBinding
 class FavoritesRecyclerView (context: Context, objects: List<MyEntity>?, viewModel : FavoritesViewModel):
     RecyclerSwipeAdapter<FavoritesRecyclerView.SimpleViewHolder>() {
     lateinit var positionListener: OnPositionClickListener
+    lateinit var counterListener: OnCounterClickListener
 
     var mContext: Context? = context
     var list: ArrayList<MyEntity> = objects as ArrayList<MyEntity>
@@ -76,6 +77,9 @@ class FavoritesRecyclerView (context: Context, objects: List<MyEntity>?, viewMod
     fun setPostionClickListener(listener: OnPositionClickListener){
         positionListener=listener
     }
+    fun setCounterClickListener(listener: OnCounterClickListener){
+        counterListener=listener
+    }
 
     override fun getItemCount(): Int {
         return list!!.size
@@ -85,20 +89,31 @@ class FavoritesRecyclerView (context: Context, objects: List<MyEntity>?, viewMod
         return R.id.swipe
     }
 
-    inner class SimpleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        var binding: ItemFavoritesBinding?
+    inner class SimpleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+        var binding: ItemFavoritesBinding?= DataBindingUtil.bind(itemView)
 
         init {
-            binding = DataBindingUtil.bind(itemView)
             binding!!.include.clickableLayout.setOnClickListener(this)
+            binding!!.include.include.minusButton.setOnClickListener(this)
+            binding!!.include.include.plusButton.setOnClickListener(this)
+            binding!!.include.include.priceButton.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
-            positionListener.OnPositionClick(v!!, list[position].id)
+            when (v?.id){
+                R.id.clickable_layout ->positionListener.OnPositionClick(v!!, list[position].id)
+
+                R.id.price_button,
+                R.id.plus_button,
+                R.id.minus_button -> counterListener.OnCounterClick(v,list[position],position)
+            }
         }
     }
 
     interface OnPositionClickListener{
         fun OnPositionClick(view: View, id: Int)
+    }
+    interface OnCounterClickListener{
+        fun OnCounterClick(view: View, entity: MyEntity, position: Int)
     }
 }
