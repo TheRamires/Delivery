@@ -7,7 +7,11 @@ import androidx.room.RoomDatabase
 import com.example.deliverykotlin.data.*
 
 @Database(entities = [MyEntity::class, Brand::class, Type::class, Favorites::class],
+<<<<<<< HEAD
         version = 2)
+=======
+        version = 1)
+>>>>>>> 029ed7ef7f9ba3f1e35dfc8216a0603f96adeb64
 abstract class AppDatabase : RoomDatabase() {
     abstract fun daoMenu(): DaoMenu?
     abstract fun daoFavorites(): DaoFavorites?

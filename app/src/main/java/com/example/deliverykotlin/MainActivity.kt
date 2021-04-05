@@ -14,7 +14,11 @@ import androidx.navigation.ui.NavigationUI
 import com.example.deliverykotlin.components.menu.MenuViewModel
 import com.example.deliverykotlin.databinding.ActivityMainBinding
 import org.koin.android.viewmodel.ext.android.viewModel
+<<<<<<< HEAD
 //Delivery
+=======
+
+>>>>>>> 029ed7ef7f9ba3f1e35dfc8216a0603f96adeb64
 
 class MainActivity : AppCompatActivity() {
     private val viewModel : MenuViewModel by viewModel()
